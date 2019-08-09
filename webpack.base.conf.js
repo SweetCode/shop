@@ -35,6 +35,7 @@ module.exports = {
             {
                 test: /\.(jsx|tsx|js|ts)$/,
                 loader: 'ts-loader',
+                enforce: 'pre',
                 options: {
                   transpileOnly: true,
                   getCustomTransformers: () => ({
@@ -55,7 +56,12 @@ module.exports = {
                   }
                 },
                 exclude: /node_modules/
-              }
+            },{
+                test: /\.tsx?$/, 
+                loader: 'tslint-loader', 
+                enforce: 'pre',
+                exclude: /(node_modules)/
+            }
         ],
 
     },

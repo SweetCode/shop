@@ -1,18 +1,31 @@
 import { Button } from 'antd-mobile'
 import { chunk } from 'lodash'
+import { observer } from 'mobx-react'
+import SayHello from './store/SayHello'
 
+import * as moment  from 'moment'
 import * as React from "react";
 
 
 interface IHlloProps { compiler: string; framework: string; }
 
-export default (props:IHlloProps) =>{
+
+export default observer((props:IHlloProps) =>{
     console.log(chunk(['a', 'b', 'c', 'd'], 2))
     return (
         <div>
-            <Button type="primary">
-                click me!
+            {
+                moment().format('YYYY-dd')
+            }
+            <Button type="primary" onClick={sayHello}>
+                click 
             </Button>
+            {
+                SayHello.getWorld
+            }
         </div>
     )
-} 
+    function sayHello(){
+        SayHello.setWorld('say hello')
+    }
+})
