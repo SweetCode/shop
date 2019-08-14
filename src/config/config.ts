@@ -1,0 +1,1 @@
+export const api:string = 'https://jsonplaceholder.typicode.com/'
