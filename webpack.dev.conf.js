@@ -6,6 +6,10 @@ module.exports = merge(baseConfig, {
     devServer: {
         port: 3000,
         overlay: true,
-        quiet: true
+        quiet: true,
+        host: '192.168.21.236',
+        disableHostCheck: true, //用于手机调试
+        hot: true,
+        historyApiFallback: true
     }
 });

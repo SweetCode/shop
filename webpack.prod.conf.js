@@ -2,6 +2,7 @@ const merge = require('webpack-merge');
 const baseConfig = require('./webpack.base.conf.js');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = merge(baseConfig, {
     mode: 'production',
@@ -9,7 +10,8 @@ module.exports = merge(baseConfig, {
         new BundleAnalyzerPlugin({ analyzerPort: 8081 }),
         new MiniCssExtractPlugin({
             filename: "[name].[hash].css",
-        })
+        }),
+        new CleanWebpackPlugin()
     ],
     performance: {
         // false | "error" | "warning" // 不显示性能提示 | 以错误形式提示 | 以警告...

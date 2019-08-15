@@ -1,6 +1,6 @@
 import { action, computed, observable } from 'mobx'
 
-class SayHello {
+export default class SayHello {
     @observable public world : string  = 'asdads';
     @action 
     public setWorld(world: string):void{
@@ -11,4 +11,3 @@ class SayHello {
         return this.world
     }
 }
-export default new SayHello()
