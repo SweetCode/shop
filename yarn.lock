@@ -6595,6 +6595,11 @@ tslint-loader@^3.5.4:
     rimraf "^2.4.4"
     semver "^5.3.0"
 
+tslint-react-hooks@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.npm.taobao.org/tslint-react-hooks/download/tslint-react-hooks-2.2.1.tgz#c52c7df65ee1517b2d6c92bc716e9ef72ccdf208"
+  integrity sha1-xSx99l7hUXstbJK8cW6e9yzN8gg=
+
 tslint-react@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npm.taobao.org/tslint-react/download/tslint-react-4.0.0.tgz#b4bb4c01c32448cb14d23f143a2f5e4989bb961e"

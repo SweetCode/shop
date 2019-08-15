@@ -8,7 +8,7 @@ import { Badge, Tabs } from 'antd-mobile'
 
 const useState = React.useState
 
-export default observer(()=>{
+function Main(){
     const [taskType,setTaskType] = useState(0)
     const tabs = [
         {
@@ -22,15 +22,9 @@ export default observer(()=>{
     
     return (
         <div>
-            <Tabs tabs={tabs}>
-                <TaskList/>
-                <div>
-                    first page
-                </div>
-                <div>
-                    {taskType}
-                </div>
-            </Tabs>
+            <Tabs tabs={tabs} />
+            <TaskList />
         </div>
     )
-})
+}
+export default observer(Main)

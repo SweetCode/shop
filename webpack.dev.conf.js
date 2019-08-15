@@ -11,5 +11,6 @@ module.exports = merge(baseConfig, {
         disableHostCheck: true, //用于手机调试
         hot: true,
         historyApiFallback: true
-    }
+    },
+    devtool: 'source-map' //用于调试
 });

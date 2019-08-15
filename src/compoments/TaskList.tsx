@@ -4,20 +4,15 @@ import { Button, ListView } from 'antd-mobile'
 
 import { inject, observer } from 'mobx-react'
 
-export default inject('store')(observer((props:any)=>{
-    const data: any[] = [{
-        name: '任务一'
-    },{
-        name: '任务二'
-    },{
-        name: '任务二'
-    },{
-        name: '任务二'
-    },{
-        name: '任务二'
-    },{
-        name: '任务二'
-    }]
+const { useEffect } = React
+
+function TaskList(props:any){
+    const taskList = props.store.taskList
+
+    useEffect(()=>{
+        taskList.getTaskListServer()
+    },[])
+
     const getSectionData = (dataBlob:any[], sectionID:any) => {
         return dataBlob[sectionID]
     };
@@ -29,36 +24,27 @@ export default inject('store')(observer((props:any)=>{
         getSectionHeaderData: getSectionData,
         rowHasChanged: (row1:any, row2:any) => row1 !== row2,
         sectionHeaderHasChanged: (s1:any, s2:any) => s1 !== s2,
-    }).cloneWithRows(data)
+    }).cloneWithRows(taskList.getTaskList)
 
     const row = (rowData:any) => {
       return (<div style={{color:'#000'}}>
-          {rowData.name}
+          {rowData.title}
       </div>)
     }
-    const sayHello = ()=>{
-        props.store.sayHello.setWorld('asd')
-    }
+ 
     const MyBody = (BodyProps:any) =>{
         return (
-          <div className="am-list-body my-body" style={{height:50,overflow:'scroll'}}>
-            <span> hhh</span>
+          <div className="am-list-body my-body" style={{height:150,overflow:'scroll'}}>
             {BodyProps.children}
           </div>
         );
     }
-    console.log(props)
     return (
         <div>
-            {
-                props.store.sayHello.getWorld
-            }
             <ListView dataSource={dataSource} renderRow={row} 
             renderScrollComponent={()=><MyBody/>}
             />
-            <Button onClick={sayHello}>
-                say Hello
-            </Button>
         </div>
     )
-}))
+}
+export default inject('store')(observer(TaskList))

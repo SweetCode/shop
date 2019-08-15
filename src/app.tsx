@@ -13,7 +13,6 @@ export default (() =>{
             <Provider store={store}>
                 <BrowserRouter>
                     <Switch>
-                        {/* <Route path="/sayhello" component={()=><Main/>} /> */}
                         <Route path="/" component={()=><Main/>} />
                     </Switch>
                 </BrowserRouter>
