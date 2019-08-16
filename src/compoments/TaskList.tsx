@@ -34,15 +34,42 @@ function TaskList(props:any){
  
     const MyBody = (BodyProps:any) =>{
         return (
-          <div className="am-list-body my-body" style={{height:150,overflow:'scroll'}}>
+          <div>
+            <span style={{ display: 'none' }}>you can custom body wrap element</span>
             {BodyProps.children}
           </div>
         );
     }
+    const onEndReached = ()=>{
+        console.log('loading')
+    }
+    const separator = (sectionID:any, rowID:any) => (
+        <div
+          key={`${sectionID}-${rowID}`}
+          style={{
+            backgroundColor: '#F5F5F9',
+            borderBottom: '1px solid #ECECED',
+            borderTop: '1px solid #ECECED',
+            height: 8,
+          }}
+        />)
     return (
         <div>
             <ListView dataSource={dataSource} renderRow={row} 
-            renderScrollComponent={()=><MyBody/>}
+            renderBodyComponent={()=><MyBody/>}
+            // useBodyScroll
+            onEndReached={onEndReached}
+            initialListSize={200}
+            renderSeparator = {separator}
+            scrollRenderAheadDistance={500}
+            className="am-list"
+            pageSize={4}
+            onScroll={() => { console.log('scroll'); }}
+            onEndReachedThreshold={10}
+            style={{
+                height:'80vh',
+                overflow:'scroll'
+            }}
             />
         </div>
     )
