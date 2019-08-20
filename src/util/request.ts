@@ -3,6 +3,9 @@ import axios from 'axios'
 import { Toast} from 'antd-mobile'
 
 import { api } from '../config/config'
+
+axios.defaults.timeout =  6000;
+
 function filterData(res:any){
     Toast.hide()
     return res.data

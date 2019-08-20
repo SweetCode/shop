@@ -7,7 +7,7 @@ export default class TaskList<T>{
     @observable public taskList: T[] = []
     @observable public state:State = "pending"
     public section =0
-    @action public getTaskListServer = async (noLoading?: boolean,res?: (res)=>{})=>{
+    @action public getTaskListServer = async (noLoading?: boolean)=>{
         this.state = "pending"
         
         try{
@@ -21,9 +21,6 @@ export default class TaskList<T>{
                 this.state = 'done'
                 console.log(this.taskList)
                 this.section ++ 
-                if(res){
-                    res(this.taskList)
-                } 
             })
             
         }catch{

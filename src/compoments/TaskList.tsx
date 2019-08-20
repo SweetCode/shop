@@ -91,9 +91,7 @@ function TaskList(props:any){
     }
     return (
         <div>
-            <ListView dataSource={dataSource} renderRow={row} 
-            // renderBodyComponent={()=><MyBody/>}
-
+            <ListView dataSource={dataSource} renderRow={row}
             renderFooter={() => (
             <div>
                 {taskList.getState as State ==='pending' && loadType === 'load' ? <div style={{ padding: 50, textAlign: 'center' }}>
