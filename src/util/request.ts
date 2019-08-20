@@ -13,7 +13,7 @@ function requestError(rej:any){
     throw new Error(rej)
 }
 
-function get(url:string,param?:any){
+function get(url:string,param?:any,noLoading?:boolean){
     url = api + url
     if(param){
       url += `?`
@@ -22,16 +22,20 @@ function get(url:string,param?:any){
         url += `${key}=${param[key]}&`
       }
     }
-    Toast.loading('加载中...',0)
+    if(!noLoading){
+        Toast.loading('加载中...',0)
+    }
     return axios({
         method: 'GET',
         url,
     }).then(filterData,requestError)
 
 }
-function post(url:string,param?:any){
+function post(url:string,param?:any,noLoading?:boolean){
     url = api + url
-    Toast.loading('加载中...',0)
+    if(!noLoading){
+        Toast.loading('加载中...',0)
+    }
     return axios({
         data: param,
         method: 'GET',

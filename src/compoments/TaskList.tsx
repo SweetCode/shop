@@ -1,73 +1,127 @@
 import * as React from 'react'
 
-import { Button, ListView } from 'antd-mobile'
+import { Button, ListView, PullToRefresh, SwipeAction } from 'antd-mobile'
 
 import { inject, observer } from 'mobx-react'
 
-const { useEffect } = React
+const { useEffect, useState } = React
+import { State } from '../types/general'
+import { TaskItem } from '../types/TaskItem'
 
 function TaskList(props:any){
     const taskList = props.store.taskList
-
+    
+    const [ loadType , setLoadType] = useState('' as 'load' | 'refresh')
     useEffect(()=>{
-        taskList.getTaskListServer()
+        taskList.getTaskListServer(false)
+        
     },[])
 
-    const getSectionData = (dataBlob:any[], sectionID:any) => {
-        return dataBlob[sectionID]
-    };
-    const getRowData = (dataBlob:any[], sectionID:any, rowID:any) => {
-        return dataBlob[sectionID][rowID]
-    };
     const dataSource = new ListView.DataSource({
-        getRowData,
-        getSectionHeaderData: getSectionData,
-        rowHasChanged: (row1:any, row2:any) => row1 !== row2,
-        sectionHeaderHasChanged: (s1:any, s2:any) => s1 !== s2,
+        rowHasChanged: () => true,
     }).cloneWithRows(taskList.getTaskList)
 
-    const row = (rowData:any) => {
-      return (<div style={{color:'#000'}}>
-          {rowData.title}
-      </div>)
-    }
- 
-    const MyBody = (BodyProps:any) =>{
-        return (
-          <div>
-            <span style={{ display: 'none' }}>you can custom body wrap element</span>
-            {BodyProps.children}
-          </div>
-        );
+    const row = (rowData:TaskItem) => {
+      return (
+          <div key={rowData.key}>
+          <SwipeAction
+            key = {rowData.key}
+            style={{ backgroundColor: 'gray' }}
+            autoClose = { true }
+            right={[
+                {
+                onPress: () => console.log('cancel'),
+                style: { backgroundColor: '#ddd', color: 'white' },
+                text: 'Cancel',
+                },
+                {
+                onPress: () => console.log('delete'),
+                style: { backgroundColor: '#F4333C', color: 'white' },
+                text: 'Delete',
+                },
+            ]}
+            left={[
+                {
+                onPress: () => console.log('reply'),
+                style: { backgroundColor: '#108ee9', color: 'white' },
+                text: 'Reply',
+                },
+                {
+                onPress: () => console.log('cancel'),
+                style: { backgroundColor: '#ddd', color: 'white' },
+                text: 'Cancel',
+                },
+            ]}
+            onOpen={() => console.log('global open')}
+            onClose={() => console.log('global close')}
+            >
+            <div className="p-3" style={{color:'#000'}}>
+                 {rowData.key}
+                 <div>
+                     {rowData.name}
+                 </div>
+            </div>
+        </SwipeAction>
+        </div>
+        )
     }
     const onEndReached = ()=>{
-        console.log('loading')
+        if(!(taskList.getState as State === 'pending')){
+            setLoadType('load')
+            taskList.getTaskListServer(true)
+        }
     }
-    const separator = (sectionID:any, rowID:any) => (
-        <div
-          key={`${sectionID}-${rowID}`}
+    const separator = (sectionID:any, rowID:any) => {
+        return (
+        <div key={rowID}
           style={{
             backgroundColor: '#F5F5F9',
             borderBottom: '1px solid #ECECED',
             borderTop: '1px solid #ECECED',
-            height: 8,
+            height: 10,
           }}
         />)
+    }
+
+    const onRefresh = ()=>{
+        setLoadType('refresh')
+        taskList.getTaskListServer()
+    }
     return (
         <div>
             <ListView dataSource={dataSource} renderRow={row} 
-            renderBodyComponent={()=><MyBody/>}
-            // useBodyScroll
+            // renderBodyComponent={()=><MyBody/>}
+
+            renderFooter={() => (
+            <div>
+                {taskList.getState as State ==='pending' && loadType === 'load' ? <div style={{ padding: 50, textAlign: 'center' }}>
+                    loading
+                </div> : ''}
+            </div>)}
             onEndReached={onEndReached}
-            initialListSize={200}
             renderSeparator = {separator}
-            scrollRenderAheadDistance={500}
-            className="am-list"
-            pageSize={4}
-            onScroll={() => { console.log('scroll'); }}
-            onEndReachedThreshold={10}
+            pageSize={3}
+            scrollRenderAheadDistance = { 100 }
+            onEndReachedThreshold = { 1 }
+            pullToRefresh={
+            <PullToRefresh
+                refreshing={taskList.getState as State ==='pending' && loadType === 'refresh'}
+                onRefresh={onRefresh}
+                getScrollContainer={() => {
+                    return ''
+                }}
+                direction= {'down'}
+                distanceToRefresh={window.devicePixelRatio * 25}
+                damping={100}
+                indicator={{
+                    activate: '释放立即刷新',
+                    deactivate: '下拉刷新',
+                    release: '您的货物来啦...',
+                    finish: '请开始您的表演吧'
+                }}
+              />}
             style={{
-                height:'80vh',
+                height:'95vh',
                 overflow:'scroll'
             }}
             />

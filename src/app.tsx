@@ -3,7 +3,7 @@ import Main from './pages/main/main'
 import { Provider } from 'mobx-react';
 import * as React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
-import * as store from './store/index'
+import * as store from './store/Index'
 
 import './style/bootstrap/bootstrap.scss'
 

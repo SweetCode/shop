@@ -1,30 +1,46 @@
 import { action, computed, flow, observable, runInAction} from 'mobx'
 import { getList } from '../server/index'
 
-export default class TaskList{
-    public getTaskListServer = flow(function * (){
-        this.taskList = []
+import { State } from '../types/general'
+
+export default class TaskList<T>{
+    @observable public taskList: T[] = []
+    @observable public state:State = "pending"
+    public section =0
+    @action public getTaskListServer = async (noLoading?: boolean,res?: (res)=>{})=>{
         this.state = "pending"
-        try{
-            const taskList =  yield getList()
-            this.taskList = taskList
-            console.log(taskList)
-            this.state = 'done'
-        }catch{
-            this.state = 'error'
-        }
         
-    })
-    @observable public taskList: any[] = []
-    @observable public state:'pending'|'done'|'error' = "pending"
-    @action public setTaskList (taskList: any[]){
+        try{
+            let taskList =  await getList(noLoading)
+            taskList = taskList.map((ele:any,ind:any)=>{
+                ele.key = this.section + '' + ind
+                return ele
+            })
+            runInAction(()=>{
+                this.taskList = this.taskList.concat(taskList)
+                this.state = 'done'
+                console.log(this.taskList)
+                this.section ++ 
+                if(res){
+                    res(this.taskList)
+                } 
+            })
+            
+        }catch{
+            runInAction(()=>{
+                this.state = 'error'
+            })
+            
+        }
+    }
+    @action public setTaskList (taskList: T[]){
         this.taskList = taskList
     }
     
-    @computed get getTaskList(){
+    @computed get getTaskList(): T[]{
         return this.taskList
     }
-    @computed get getState(){
+    @computed get getState(): State{
         return this.state
     }
     

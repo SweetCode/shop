@@ -10,7 +10,8 @@
     "rules": {
       "no-console": false,
       "jsx-no-lambda": false,
-      "react-hooks-nesting": "error"
+      "react-hooks-nesting": "error",
+      "object-literal-sort-keys": false
     }
   }
   
