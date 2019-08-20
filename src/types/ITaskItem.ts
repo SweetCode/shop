@@ -1,4 +1,4 @@
-export type TaskItem = {
+export interface ITaskItem  {
     name: string,
     key: string
 }

@@ -1,9 +1,9 @@
-import Main from './pages/main/main'
-
 import { Provider } from 'mobx-react';
 import * as React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import * as store from './store/Index'
+
+import routes from './router/router'
 
 import './style/bootstrap/bootstrap.scss'
 
@@ -13,7 +13,13 @@ export default (() =>{
             <Provider store={store}>
                 <BrowserRouter>
                     <Switch>
-                        <Route path="/" component={()=><Main/>} />
+                        {
+                            routes.map((ele,ind)=>{
+                                return (
+                                    <Route path={ele.path} component={ele.component} exact={ele.exact} key={ind} name={ele.name}/>
+                                )
+                            })
+                        }
                     </Switch>
                 </BrowserRouter>
             </Provider>

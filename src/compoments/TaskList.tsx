@@ -4,9 +4,11 @@ import { Button, ListView, PullToRefresh, SwipeAction } from 'antd-mobile'
 
 import { inject, observer } from 'mobx-react'
 
+import { withRouter } from 'react-router'
+
 const { useEffect, useState } = React
 import { State } from '../types/general'
-import { TaskItem } from '../types/TaskItem'
+import { ITaskItem } from '../types/ITaskItem'
 
 function TaskList(props:any){
     const taskList = props.store.taskList
@@ -21,7 +23,7 @@ function TaskList(props:any){
         rowHasChanged: () => true,
     }).cloneWithRows(taskList.getTaskList)
 
-    const row = (rowData:TaskItem) => {
+    const row = (rowData:ITaskItem) => {
       return (
           <div key={rowData.key}>
           <SwipeAction
@@ -55,7 +57,7 @@ function TaskList(props:any){
             onOpen={() => console.log('global open')}
             onClose={() => console.log('global close')}
             >
-            <div className="p-3" style={{color:'#000'}}>
+            <div className="p-3" style={{color:'#000'}} onClick = {()=>props.history.push('/detail')}>
                  {rowData.key}
                  <div>
                      {rowData.name}
@@ -121,11 +123,11 @@ function TaskList(props:any){
                 }}
               />}
             style={{
-                height:'95vh',
+                height:'90vh',
                 overflow:'scroll'
             }}
             />
         </div>
     )
 }
-export default inject('store')(observer(TaskList))
+export default inject('store')(withRouter(observer(TaskList)))

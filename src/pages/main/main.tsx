@@ -2,9 +2,12 @@ import { observer } from 'mobx-react'
 
 import * as React from 'react'
 
+import Detail from '../detail/Detail'
+
 import TaskList from '../../compoments/taskList'
 
 import { Badge, Tabs } from 'antd-mobile'
+import { Route } from 'react-router-dom';
 
 const useState = React.useState
 
@@ -24,6 +27,7 @@ function Main(){
         <div>
             <Tabs tabs={tabs} />
             <TaskList />
+            <Route name="detail" path="/detail" component={Detail}/>
         </div>
     )
 }
